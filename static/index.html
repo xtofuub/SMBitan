@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SMB Enumerator</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+        <h1>SMB Enumerator</h1>
+      </div>
+      <div class="top-controls">
+        <input id="host" placeholder="UNC path e.g. \\\\10.0.0.5\\tekniikka" value="\\\\10.0.0.5\\Tekniikka" spellcheck="false">
+        <label class="toggle-label"><input type="checkbox" id="useUnc" checked> UNC</label>
+        <input id="user" placeholder="Username">
+        <input id="pass" type="password" placeholder="Password">
+        <button id="connect">Connect</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="sidebar-head">
+          <h2>Explorer</h2>
+          <div class="sidebar-actions">
+            <input id="search" placeholder="Search files..." class="filter-input">
+            <button id="clearCache" title="Clear index cache and rescan">🔄</button>
+            <button id="refresh" title="Refresh">&#x27F3;</button>
+          </div>
+          <div id="searchFilters" class="search-filters" style="display:none">
+            <div class="filter-group">
+              <button class="filter-btn active" data-filter="match" data-value="name" title="Match file/folder name only">Name</button>
+              <button class="filter-btn" data-filter="match" data-value="path" title="Match full path">Path</button>
+            </div>
+            <div class="filter-group">
+              <button class="filter-btn active" data-filter="type" data-value="all" title="Show all">All</button>
+              <button class="filter-btn" data-filter="type" data-value="file" title="Files only">Files</button>
+              <button class="filter-btn" data-filter="type" data-value="dir" title="Folders only">Folders</button>
+            </div>
+            <div class="filter-group">
+              <button class="filter-btn" data-filter="exact" data-value="1" title="Exact word match">Exact</button>
+            </div>
+          </div>
+        </div>
+        <div id="shares" class="tree-list">
+          <div class="placeholder">Enter a path and click <strong>Connect</strong>.</div>
+        </div>
+      </aside>
+
+      <section class="viewer">
+        <div class="viewer-head">
+          <nav id="breadcrumbs" class="breadcrumbs"><span class="bc-sep">/</span></nav>
+          <div class="viewer-actions">
+            <button id="openInBrowser" class="btn-action" style="display:none">&#x1F310; Open in Browser</button>
+            <button id="download" class="btn-action" style="display:none">&#x2B07; Download</button>
+          </div>
+        </div>
+        <div id="filePreview" class="preview">
+          <div id="emptyState" class="empty-state">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <p>Select a file to preview</p>
+          </div>
+          <div id="imgPreview" class="img-preview" style="display:none"><img id="imgEl" alt="Preview"></div>
+          <div id="docxPreview" class="docx-preview" style="display:none"></div>
+          <pre id="fileContent" class="file-content" style="display:none"></pre>
+          <div id="pdfPreview" class="pdf-preview" style="display:none">
+            <button id="pdfPrev" class="pdf-arrow-btn pdf-arrow-prev">‹</button>
+            <div class="pdf-center">
+              <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
+              <div class="pdf-page-info">
+                <span id="pdfPageNum" class="pdf-page-num">Page 1 of 1</span>
+              </div>
+            </div>
+            <button id="pdfNext" class="pdf-arrow-btn pdf-arrow-next">›</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
