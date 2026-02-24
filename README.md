@@ -23,21 +23,21 @@ No complicated setup. No heavy dependencies. Just connect to a UNC path and star
 
 ---
 
-## ✨ Features
+## Features
 
-### 📂 File Explorer
+### File Explorer
 - **Tree-based navigation** — Expand and collapse folders just like a desktop file explorer
 - **UNC path support** — Connect directly to Windows network shares (e.g. `\\server\share`)
 - **Auto-connect** — Pre-configured path loads automatically on startup
 - **Breadcrumb navigation** — Always know where you are in the file tree
 
-### 🔎 Instant Search
+### Instant Search
 - **Background indexing** — Entire file tree is indexed in-memory for near-instant search
 - **Disk cache** — Index is saved to disk so reconnections are lightning-fast (24h TTL)
 - **Smart filters** — Search by name or full path, filter by files/folders, toggle exact word match
 - **Click to preview** — Search results open file previews directly; use the 📂 button to locate in tree
 
-### 👁️ File Preview
+### File Preview
 - **Images** — PNG, JPG, GIF, WebP, BMP, SVG, ICO, TIFF, AVIF rendered inline
 - **PDF documents** — Full page-by-page viewer with navigation arrows (powered by PDF.js)
 - **Word documents** — `.docx` files rendered as formatted HTML (powered by mammoth.js)
@@ -45,7 +45,7 @@ No complicated setup. No heavy dependencies. Just connect to a UNC path and star
 - **Open in Browser** — Open any file directly in a new browser tab
 - **Download** — One-click download for any file
 
-### 🎨 Interface
+### Interface
 - **Dark theme** — Easy on the eyes, inspired by GitHub's dark mode
 - **Animated transitions** — Smooth expand/collapse with staggered fade-in animations
 - **File icons** — Visual file type indicators at a glance
@@ -53,7 +53,7 @@ No complicated setup. No heavy dependencies. Just connect to a UNC path and star
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -91,7 +91,7 @@ The app auto-connects to a pre-configured UNC path on load. To change it, edit `
 Replace `\\\\10.0.0.5\\Tekniikka` with your own UNC path (double backslashes in HTML).
 
 
-## 🖥️ Usage
+## Usage
 
 | Step | Action |
 |------|--------|
@@ -113,7 +113,7 @@ Replace `\\\\10.0.0.5\\Tekniikka` with your own UNC path (double backslashes in 
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 smb-enumerator/
@@ -128,7 +128,7 @@ smb-enumerator/
 
 ---
 
-## ⚙️ API Endpoints
+## API Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -142,7 +142,7 @@ smb-enumerator/
 
 ---
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 > **This tool is intended for use on systems and network shares you are authorized to access.**
 > The author is not responsible for any misuse. Always ensure you have proper permissions before connecting to network resources.
@@ -154,5 +154,6 @@ smb-enumerator/
 Built with ❤️ using Flask, PDF.js & mammoth.js
 
 </div>
+
 
 
