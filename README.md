@@ -63,15 +63,8 @@ No complicated setup. No heavy dependencies. Just connect to a UNC path and star
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/smb-enumerator.git
-cd smb-enumerator
-
-# Create a virtual environment
-python -m venv .venv
-
-# Activate it
-.venv\Scripts\activate        # Windows
-# source .venv/bin/activate   # macOS / Linux
+git clone https://github.com/xtofuub/SMBitan.git
+cd SMBitan
 
 # Install dependencies
 pip install -r requirements.txt
@@ -150,3 +143,4 @@ smb-enumerator/
 Built with ❤️ using Flask, PDF.js & mammoth.js
 
 </div>
+
