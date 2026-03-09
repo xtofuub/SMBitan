@@ -1,9 +1,12 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>SMB Enumerator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
   <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -11,7 +14,7 @@
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   </script>
 </head>
-<body>
+<body class="theme-dark">
   <div id="app">
     <header class="topbar">
       <div class="brand">
@@ -24,6 +27,7 @@
         <input id="user" placeholder="Username">
         <input id="pass" type="password" placeholder="Password">
         <button id="connect">Connect</button>
+        <button id="themeToggle" type="button" title="Toggle theme">Dark</button>
       </div>
     </header>
 
@@ -33,8 +37,8 @@
           <h2>Explorer</h2>
           <div class="sidebar-actions">
             <input id="search" placeholder="Search files..." class="filter-input">
-            <button id="clearCache" title="Clear index cache and rescan">🔄</button>
-            <button id="refresh" title="Refresh">&#x27F3;</button>
+            <button id="clearCache" title="Clear index cache and rescan">Clear</button>
+            <button id="refresh" title="Refresh">Refresh</button>
           </div>
           <div id="searchFilters" class="search-filters" style="display:none">
             <div class="filter-group">
@@ -60,8 +64,8 @@
         <div class="viewer-head">
           <nav id="breadcrumbs" class="breadcrumbs"><span class="bc-sep">/</span></nav>
           <div class="viewer-actions">
-            <button id="openInBrowser" class="btn-action" style="display:none">&#x1F310; Open in Browser</button>
-            <button id="download" class="btn-action" style="display:none">&#x2B07; Download</button>
+            <button id="openInBrowser" class="btn-action" style="display:none">Open in Browser</button>
+            <button id="download" class="btn-action" style="display:none">Download</button>
           </div>
         </div>
         <div id="filePreview" class="preview">
@@ -73,14 +77,14 @@
           <div id="docxPreview" class="docx-preview" style="display:none"></div>
           <pre id="fileContent" class="file-content" style="display:none"></pre>
           <div id="pdfPreview" class="pdf-preview" style="display:none">
-            <button id="pdfPrev" class="pdf-arrow-btn pdf-arrow-prev">‹</button>
+            <button id="pdfPrev" class="pdf-arrow-btn pdf-arrow-prev">&lt;</button>
             <div class="pdf-center">
               <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
               <div class="pdf-page-info">
                 <span id="pdfPageNum" class="pdf-page-num">Page 1 of 1</span>
               </div>
             </div>
-            <button id="pdfNext" class="pdf-arrow-btn pdf-arrow-next">›</button>
+            <button id="pdfNext" class="pdf-arrow-btn pdf-arrow-next">&gt;</button>
           </div>
         </div>
       </section>

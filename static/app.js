@@ -1,6 +1,6 @@
-/* ===== SMB Enumerator — Frontend ===== */
+﻿/* ===== SMB Enumerator â€” Frontend ===== */
 
-// ── Helpers ──
+// â”€â”€ Helpers â”€â”€
 function el(tag, cls) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -16,11 +16,18 @@ function fmtSize(b) {
 function fileIcon(name, isDir) {
   if (isDir) return '📁';
   const ext = (name.split('.').pop() || '').toLowerCase();
-  const map = {txt:'📝',json:'📋',py:'🐍',js:'📜',html:'🌐',css:'🎨',pdf:'📕',docx:'📘',doc:'📘',xlsx:'📊',xls:'📊',pptx:'📙',zip:'📦','7z':'📦',tar:'📦',gz:'📦',exe:'⚙️',iso:'💿',vmdk:'💿',png:'🖼️',jpg:'🖼️',jpeg:'🖼️',gif:'🖼️',webp:'🖼️',bmp:'🖼️',svg:'🖼️',ico:'🖼️',tiff:'🖼️',tif:'🖼️',avif:'🖼️',conf:'⚙️',cmd:'⚙️',ps1:'⚙️',csv:'📊',xml:'📋',lbx:'📎',sys:'⚙️'};
+  const map = {
+    txt: '📝', json: '🧾', py: '🐍', js: '📜', html: '🌐', css: '🎨',
+    pdf: '📕', docx: '📘', doc: '📘', xlsx: '📊', xls: '📊', pptx: '📙',
+    zip: '📦', '7z': '📦', tar: '📦', gz: '📦', exe: '⚙️', iso: '💿', vmdk: '💿',
+    png: '🖼️', jpg: '🖼️', jpeg: '🖼️', gif: '🖼️', webp: '🖼️', bmp: '🖼️',
+    svg: '🖼️', ico: '🖼️', tiff: '🖼️', tif: '🖼️', avif: '🖼️', csv: '📊',
+    xml: '🧾', conf: '⚙️', cmd: '⚙️', ps1: '⚙️', lbx: '📎', sys: '⚙️'
+  };
   return map[ext] || '📄';
 }
 
-// ── DOM refs ──
+// â”€â”€ DOM refs â”€â”€
 const $ = id => document.getElementById(id);
 const hostInput   = $('host');
 const userInput   = $('user');
@@ -42,11 +49,12 @@ const openInBrowserBtn = $('openInBrowser');
 const useUncCb    = $('useUnc');
 const refreshBtn  = $('refresh');
 const clearCacheBtn = $('clearCache');
+const themeToggle = $('themeToggle');
 
-// ── State ──
+// â”€â”€ State â”€â”€
 let currentUnc = null;  // set when connected via UNC
 
-// ── PDF viewer state ──
+// â”€â”€ PDF viewer state â”€â”€
 let pdfDoc = null;
 let pdfPageIdx = 0;
 let pdfZoom = 1.5;
@@ -63,7 +71,7 @@ async function renderPdfPage(pageNum) {
   pdfPageNum.textContent = `Page ${pdfPageIdx + 1} of ${pdfDoc.numPages}`;
 }
 
-// ── API ──
+// â”€â”€ API â”€â”€
 function api(path, params) {
   const url = new URL(path, location.origin);
   for (const [k, v] of Object.entries(params || {})) {
@@ -79,10 +87,10 @@ function apiRaw(path, params) {
   return fetch(url);
 }
 
-// ── Normalize host input → proper UNC ──
+// â”€â”€ Normalize host input â†’ proper UNC â”€â”€
 function normalizeHost(raw) {
   let h = raw.trim();
-  // file:// URL → UNC
+  // file:// URL â†’ UNC
   if (h.startsWith('file://')) {
     h = h.slice('file://'.length).replace(/^\/+/, '');
     h = '\\\\' + h.replace(/\//g, '\\');
@@ -101,7 +109,7 @@ function normalizeHost(raw) {
   return h;
 }
 
-// ── Build tree ──
+// â”€â”€ Build tree â”€â”€
 function buildTree(shares, host, user, pass) {
   sharesDiv.innerHTML = '';
   const ul = el('ul');
@@ -117,13 +125,13 @@ function buildTree(shares, host, user, pass) {
   sharesDiv.appendChild(ul);
 }
 
-// ── Build params for api calls ──
+// â”€â”€ Build params for api calls â”€â”€
 function mkParams(path, host, user, pass) {
   if (currentUnc) return { unc: currentUnc, path };
   return { host, share: '', path, user, pass };
 }
 
-// ── Collapse helper: remove child <ul> from same <li> ──
+// â”€â”€ Collapse helper: remove child <ul> from same <li> â”€â”€
 function collapseNode(node) {
   node.classList.remove('expanded');
   // The <ul> is a sibling of `node` inside the same <li>
@@ -134,7 +142,7 @@ function collapseNode(node) {
   }
 }
 
-// ── Loading indicator for a node ──
+// â”€â”€ Loading indicator for a node â”€â”€
 function setNodeLoading(node, loading) {
   const chevron = node.querySelector('.chevron');
   if (!chevron) return;
@@ -146,7 +154,7 @@ function setNodeLoading(node, loading) {
   }
 }
 
-// ── Toggle share root ──
+// â”€â”€ Toggle share root â”€â”€
 async function toggleShare(node, share, host, user, pass) {
   if (node.classList.contains('expanded')) {
     collapseNode(node);
@@ -164,7 +172,7 @@ async function toggleShare(node, share, host, user, pass) {
   node.parentNode.insertBefore(ul, node.nextSibling);
 }
 
-// ── Build a <ul> of file entries with staggered animation ──
+// â”€â”€ Build a <ul> of file entries with staggered animation â”€â”€
 function buildFileList(files, share, host, user, pass, parentPath) {
   const ul = el('ul');
   // sort: dirs first, then alphabetical
@@ -198,7 +206,7 @@ function buildFileList(files, share, host, user, pass, parentPath) {
   return ul;
 }
 
-// ── Navigate to a path in the tree — expand each segment progressively ──
+// â”€â”€ Navigate to a path in the tree â€” expand each segment progressively â”€â”€
 async function expandToPath(targetPath, andOpenFile) {
   const host = hostInput.value;
   const user = userInput.value;
@@ -238,14 +246,14 @@ async function expandToPath(targetPath, andOpenFile) {
     if (!matchNode) break;
 
     if (isLast && andOpenFile) {
-      // It's a file — click to open preview
+      // It's a file â€” click to open preview
       matchNode.click();
       // scroll into view
       matchNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
-    // It's a directory segment — expand if not already
+    // It's a directory segment â€” expand if not already
     if (!matchNode.classList.contains('expanded')) {
       // Need to expand this directory
       const dirPath = segments.slice(0, i + 1).join('/');
@@ -263,7 +271,7 @@ async function expandToPath(targetPath, andOpenFile) {
   }
 }
 
-// ── Toggle directory ──
+// â”€â”€ Toggle directory â”€â”€
 async function toggleDir(node, share, host, user, pass, dirPath) {
   if (node.classList.contains('expanded')) {
     collapseNode(node);
@@ -281,7 +289,7 @@ async function toggleDir(node, share, host, user, pass, dirPath) {
   node.parentNode.insertBefore(ul, node.nextSibling);
 }
 
-// ── Open / preview file ──
+// â”€â”€ Open / preview file â”€â”€
 async function openFile(share, host, user, pass, filePath) {
   // reset viewer
   emptyState.style.display = 'none';
@@ -410,7 +418,7 @@ async function openFile(share, host, user, pass, filePath) {
     return;
   }
 
-  // binary — download only
+  // binary â€” download only
   const blob = await r.blob();
   fileContent.style.display = 'block';
   fileContent.textContent = `Binary file (${fmtSize(blob.size)}). Click Download to save.`;
@@ -420,7 +428,7 @@ async function openFile(share, host, user, pass, filePath) {
   };
 }
 
-// ── Connect ──
+// â”€â”€ Connect â”€â”€
 connectBtn.onclick = async () => {
   const raw = hostInput.value.trim();
   const user = userInput.value;
@@ -454,7 +462,7 @@ connectBtn.onclick = async () => {
   }
 };
 
-// ── Index status ──
+// â”€â”€ Index status â”€â”€
 let indexStatus = 'idle'; // idle | indexing | ready
 let indexedCount = 0;
 let indexPollTimer = null;
@@ -499,7 +507,7 @@ function updateIndexBadge() {
     badge.style.display = '';
   } else if (indexStatus === 'ready') {
     badge.className = 'index-badge ready';
-    badge.innerHTML = `⚡ ${indexedCount.toLocaleString()} files indexed`;
+    badge.innerHTML = `Ready: ${indexedCount.toLocaleString()} files indexed`;
     badge.style.display = '';
     // auto-hide after 4s
     setTimeout(() => { badge.style.display = 'none'; }, 4000);
@@ -508,7 +516,7 @@ function updateIndexBadge() {
   }
 }
 
-// ── Search filters ──
+// â”€â”€ Search filters â”€â”€
 const searchFiltersDiv = $('searchFilters');
 let searchMatch = 'name';  // name | path
 let searchType = 'all';    // all | file | dir
@@ -540,7 +548,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// ── Search — debounced backend search (instant when indexed) ──
+// â”€â”€ Search â€” debounced backend search (instant when indexed) â”€â”€
 let searchTimer = null;
 let searchAbort = null;
 
@@ -589,9 +597,9 @@ function showSearchResults(results, query) {
       nameHtml = `${before}<mark>${match}</mark>${after}`;
     }
     let sizeHtml = r.isDirectory ? '' : `<span class="size">${fmtSize(r.size)}</span>`;
-    const locateBtn = `<button class="search-locate-btn" title="Show in tree">📂</button>`;
+    const locateBtn = `<button class="search-locate-btn" title="Show in tree">📍</button>`;
     item.innerHTML = `<span class="icon">${icon}</span><div class="search-info"><span class="search-name">${nameHtml}</span><span class="search-path">${parentPath || '/'}</span></div>${sizeHtml}${locateBtn}`;
-    // Click → preview the file directly
+    // Click â†’ preview the file directly
     item.onclick = (e) => {
       if (e.target.closest('.search-locate-btn')) return; // handled by locate btn
       if (r.isDirectory) {
@@ -606,7 +614,7 @@ function showSearchResults(results, query) {
         openFile(share, host, user, pass, r.path);
       }
     };
-    // Locate button → navigate to path in tree
+    // Locate button â†’ navigate to path in tree
     item.querySelector('.search-locate-btn').onclick = (e) => {
       e.stopPropagation();
       searchInput.value = '';
@@ -629,7 +637,7 @@ searchInput.addEventListener('input', () => {
   if (searchAbort) { searchAbort.abort(); searchAbort = null; }
   if (!q) { showTree(); return; }
   if (!currentUnc) {
-    // no UNC connected — fall back to DOM-only filter
+    // no UNC connected â€” fall back to DOM-only filter
     const allLis = sharesDiv.querySelectorAll('li');
     allLis.forEach(li => { li.style.display = 'none'; li.classList.remove('filter-match'); });
     allLis.forEach(li => {
@@ -670,9 +678,9 @@ searchInput.addEventListener('input', () => {
       // show result stats
       const statsDiv = el('div', 'search-stats');
       const count = (data.results || []).length;
-      const src = data.source === 'index' ? '⚡ indexed' : '🔍 live';
+      const src = data.source === 'index' ? 'indexed' : 'live';
       statsDiv.textContent = `${count} result${count !== 1 ? 's' : ''} (${src})`;
-      if (data.truncated) statsDiv.textContent += ' — refine to see more';
+      if (data.truncated) statsDiv.textContent += ' - refine to see more';
       document.getElementById('searchResults')?.prepend(statsDiv);
     } catch (e) {
       if (e.name === 'AbortError') return;
@@ -689,19 +697,19 @@ searchInput.addEventListener('keydown', (e) => {
   }
 });
 
-// ── Refresh ──
+// â”€â”€ Refresh â”€â”€
 if (refreshBtn) refreshBtn.onclick = () => connectBtn.click();
 
-// ── Clear index cache ──
+// â”€â”€ Clear index cache â”€â”€
 if (clearCacheBtn) {
   clearCacheBtn.onclick = async () => {
     if (!currentUnc) return;
     clearCacheBtn.disabled = true;
-    clearCacheBtn.textContent = '⏳';
+    clearCacheBtn.textContent = 'Clearing';
     try {
       const res = await fetch(`/api/index/clear?unc=${encodeURIComponent(currentUnc)}`, { method: 'POST' });
       if (res.ok) {
-        clearCacheBtn.textContent = '✓';
+        clearCacheBtn.textContent = 'Done';
         await new Promise(r => setTimeout(r, 800));
         // Re-trigger indexing for fresh scan
         triggerIndex(currentUnc);
@@ -709,12 +717,12 @@ if (clearCacheBtn) {
     } catch(e) { /* ignore */ }
     finally {
       clearCacheBtn.disabled = false;
-      clearCacheBtn.textContent = '🔄';
+      clearCacheBtn.textContent = 'Clear';
     }
   };
 }
 
-// ── Auto-hide credentials ──
+// â”€â”€ Auto-hide credentials â”€â”€
 function updateMode() {
   const v = (hostInput.value || '').trim();
   const hide = (useUncCb && useUncCb.checked) || v.startsWith('\\\\') || v.startsWith('\\') || v.startsWith('file://') || v.startsWith('//') || /^[A-Za-z]:[\\\/]?$/.test(v) || (v.includes('\\') && v.split('\\')[0].includes('.'));
@@ -725,8 +733,32 @@ hostInput.addEventListener('input', updateMode);
 if (useUncCb) useUncCb.addEventListener('change', updateMode);
 updateMode();
 
-// ── Auto-connect and auto-expand root on page load ──
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.body.classList.toggle('theme-dark', isDark);
+  document.body.classList.toggle('theme-light', !isDark);
+  if (themeToggle) {
+    themeToggle.textContent = isDark ? 'Dark mode' : 'Light mode';
+    themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+    themeToggle.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+  }
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  const theme = saved === 'dark' || saved === 'light' ? saved : 'dark';
+  applyTheme(theme);
+  if (!themeToggle) return;
+  themeToggle.onclick = () => {
+    const next = document.body.classList.contains('theme-dark') ? 'light' : 'dark';
+    localStorage.setItem('theme', next);
+    applyTheme(next);
+  };
+}
+
+// â”€â”€ Auto-connect and auto-expand root on page load â”€â”€
 window.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   if (hostInput.value.trim()) {
     connectBtn.click();
     // after connect resolves, auto-expand the first share node
@@ -743,4 +775,6 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => clearInterval(waitForTree), 10000);
   }
 });
+
+
 
