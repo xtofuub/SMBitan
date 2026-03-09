@@ -11,6 +11,7 @@ Browse, search, and preview files on Windows network shares — right from your 
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
 </div>
+<img width="1695" height="962" alt="image" src="https://github.com/user-attachments/assets/d69d05c4-0b26-48af-a34c-46276b9bc263" />
 
 ---
 
@@ -150,3 +151,4 @@ smb-enumerator/
 Built with ❤️ using Flask, PDF.js & mammoth.js
 
 </div>
+
