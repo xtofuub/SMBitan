@@ -19,7 +19,7 @@ Browse, search, and preview files on Windows network shares — right from your 
 **SMB Enumerator** is a lightweight, self-hosted web application that lets you browse and interact with files on Windows network shares (UNC paths) through a clean, professional dark-themed interface. Think of it as a modern file explorer that runs in your browser.
 
 No complicated setup. No heavy dependencies. Just connect to a UNC path and start browsing.
-<img width="1911" height="992" alt="image" src="https://github.com/user-attachments/assets/08792a9a-cec5-46d6-8c5b-efc8a60ef0f6" />
+<img width="1695" height="962" alt="image" src="https://github.com/user-attachments/assets/7c8e6af9-26f3-434c-ad4e-b86c8a13851a" />
 
 ---
 
@@ -154,6 +154,7 @@ smb-enumerator/
 Built with ❤️ using Flask, PDF.js & mammoth.js
 
 </div>
+
 
 
 
