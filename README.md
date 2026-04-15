@@ -1,7 +1,7 @@
 # 📁 SMB Enumerator
 
 A web-based browser for Windows network shares with file search and previews.
-
+</div> <img width="1695" height="962" alt="image" src="https://github.com/user-attachments/assets/d69d05c4-0b26-48af-a34c-46276b9bc263" />
 Browse, search, and open files on SMB/UNC paths from your browser through a clean interface.
 
 ---
