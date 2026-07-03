@@ -1,0 +1,46 @@
+name: Dependency Smoke Check
+
+on:
+  pull_request:
+    paths:
+      - "**/package.json"
+      - "**/package-lock.json"
+      - "**/requirements*.txt"
+      - "**/pyproject.toml"
+      - "**/Pipfile"
+      - "**/go.mod"
+      - "**/Cargo.toml"
+      - "**/Cargo.lock"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: dependency-smoke-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Check Python dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          dirs=('.')
+          for dir in "${dirs[@]}"; do
+            echo "::group::python ${dir}"
+            cd "${GITHUB_WORKSPACE}/${dir}"
+            shopt -s nullglob
+            reqs=(requirements*.txt)
+            for req in "${reqs[@]}"; do python -m pip install -r "${req}"; done
+            if [ -f pyproject.toml ]; then python -m pip install .; fi
+            python -m compileall . -q
+            echo "::endgroup::"
+          done
